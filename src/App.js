@@ -1,11 +1,12 @@
+import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import styles from './App.css'; // Corrected CSS import
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
 import { useAuth0 } from '@auth0/auth0-react';
 import NotesList from './components/NotesList';
-import  { useEffect, useState } from 'react'; 
+import { useEffect, useState } from 'react'; 
 import { nanoid } from 'nanoid';
 import Search from './components/Search';
 import Header from './components/Header';
