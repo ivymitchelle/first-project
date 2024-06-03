@@ -1,0 +1,64 @@
+.login{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: whitesmoke;
+}
+.login-container{
+    display: flex;  
+    gap: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 80vh;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: white;
+    margin-top: 30px;
+    position: relative;
+    justify-content: center;
+}
+.login-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 25%;
+
+
+}
+.welcome{
+
+  
+   
+
+}
+
+.to{
+    position: absolute;
+    top: 16%;
+
+}
+
+.button {
+    width: 300px;
+    height: 40px;
+    position: absolute;
+    bottom: 120px;
+    border-radius: 5px;
+    border: none;
+   
+}
+
+.button:hover {
+    background-color:#40e0d0;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 768px){
+    .login-container{
+        width: 300px;
+    }
+}
+
+

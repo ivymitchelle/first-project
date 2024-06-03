@@ -3,40 +3,58 @@ import './App.css';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
-import { useAuth0 } from '@auth0/auth0-react';
 import NotesList from './components/NotesList';
 import  { useEffect, useState } from 'react'; 
 import { nanoid } from 'nanoid';
 import Search from './components/Search';
 import Header from './components/Header';
+import { useAuth0 } from '@auth0/auth0-react';
+import ReactLoading from 'react-loading';
 
 function App() {
+
+
   const [notes, setNotes] = useState([
     {
     id: nanoid(),
     text: "this is my first note",
     date: "12/08/2020",
+    isEditing: false
   },
   {
     id: nanoid(),
     text: "this is my second note",
     date: "13/08/2020",
+    isEditing: false
   },
   {
     id: nanoid(),
     text: "this is my third note",
     date: "14/08/2020",
+    isEditing: false
   },
   {
     id: nanoid(),
     text: "this is my new note",
     date: "15/08/2020",
+    isEditing: false
   },
 ]);
 
 const [searchText, setSearchText] = useState('');
 
 const[darkmode, setDarkMode] = useState(false);
+const {isAuthenticated, isLoading} = useAuth0();
+
+console.log(isAuthenticated);
+
+
+useEffect(()=> {
+  localStorage.setItem(
+    'react-notes-app-data',
+    JSON.stringify(notes)
+  );
+}, [notes]);
 
 useEffect(()=> {
   const savedNotes = JSON.parse(
@@ -48,12 +66,6 @@ useEffect(()=> {
  
 }, []);
 
-useEffect(()=> {
-  localStorage.setItem(
-    'react-notes-app-data',
-    JSON.stringify(notes)
-  );
-}, [notes]);
 
 const addNote = (text) => {
 const date = new Date();
@@ -71,10 +83,38 @@ const deleteNote = (id) => {
   setNotes(newNotes);
 }
 
-  const { isLoading, error  } = useAuth0();
+const editNote = (id) => {
+  const newNotes = [...notes];
+  const note = newNotes.find((note) => note.id === id);
+
+  note.isEditing = true;
+  setNotes(newNotes);
+
+}
+
+const saveNote = (id, newtext) => {
+  const newNotes = [...notes];
+  const note = newNotes.find((note) => note.id === id);
+
+  note.text = newtext;
+  note.isEditing = false;
+  setNotes(newNotes);
+}
+
+
+
+if (isLoading) {
+  return <ReactLoading type={'spin'} color={'#000'} height={100} width={300} position={'center'}/>; // Adjust the loading spinner as needed
+}
+
+
 
     return (
 
+
+    isAuthenticated ? (
+
+    
      <div className={`${darkmode && 'dark-mode'}`}>
       <div className='container'>
         <Header handleToggleDarkMode={setDarkMode}/>
@@ -85,23 +125,18 @@ const deleteNote = (id) => {
         )}
          handleAddNote={addNote}
          handleDeleteNote={deleteNote}
+         handleEditNote={editNote}
+         handleSaveNote={saveNote}
          />
       </div>
-     </div> 
-    /*<main className="column">
-     <h2>Auth0 Login</h2>
-     {error && <p>Authentication Error</p>}
-     {!error && isLoading && <p>Loading...</p>}
-     {!error && !isLoading && (
-      <>
-      <LoginButton />
       <LogoutButton />
-      <Profile />
-      </>
-      
-     )}
-     
-    </main>*/
+     </div> 
+    ) : (
+      <div>
+        <LoginButton />
+      </div>
+    )
+
   );
 };
 
