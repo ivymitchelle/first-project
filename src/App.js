@@ -38,6 +38,7 @@ function App() {
 const [searchText, setSearchText] = useState('');
 
 const[darkmode, setDarkMode] = useState(false);
+const {isAuthenticated}=useAuth0();
 
 useEffect(()=> {
   const savedNotes = JSON.parse(
@@ -72,11 +73,11 @@ const deleteNote = (id) => {
   setNotes(newNotes);
 }
 
-  const { isLoading, error  } = useAuth0();
+  useAuth0();
 
     return (
-
-     <div className={`${darkmode && 'dark-mode'}`}>
+      isAuthenticated ?(
+        <div className={`${darkmode && 'dark-mode'}`}>
       <div className='container'>
         <Header handleToggleDarkMode={setDarkMode}/>
         <Search handleSearchNote={setSearchText}/>
@@ -87,9 +88,11 @@ const deleteNote = (id) => {
          handleAddNote={addNote}
          handleDeleteNote={deleteNote}
          />
-      </div>
-     </div> 
-    /*<main className="column">
+        </div><LogoutButton /></div>
+      ):(<div><LoginButton /></div>)
+
+     
+     /*<main className="column">
      <h2>Auth0 Login</h2>
      {error && <p>Authentication Error</p>}
      {!error && isLoading && <p>Loading...</p>}
